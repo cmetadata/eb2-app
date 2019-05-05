@@ -1,7 +1,10 @@
 <?php
-
+$url = parse_url(getenv("DATABASE_URL"));
+$host = $url["host"];
+$username = $url["user"];
+$password = $url["pass"];
+$database = substr($url["path"], 1);
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Default Database Connection Name
@@ -12,9 +15,7 @@ return [
     | you may use many connections at once using the Database library.
     |
     */
-
     'default' => env('DB_CONNECTION', 'pgsql'),
-
     /*
     |--------------------------------------------------------------------------
     | Database Connections
@@ -30,16 +31,13 @@ return [
     | choice installed on your machine before you begin development.
     |
     */
-
     'connections' => [
-
         'sqlite' => [
             'driver' => 'sqlite',
             'database' => env('DB_DATABASE', database_path('database.sqlite')),
             'prefix' => '',
             'foreign_key_constraints' => env('DB_FOREIGN_KEYS', true),
         ],
-
         'mysql' => [
             'driver' => 'mysql',
             'host' => env('DB_HOST', '127.0.0.1'),
@@ -55,23 +53,18 @@ return [
             'strict' => true,
             'engine' => null,
         ],
-
-        'pgsql' => [
-            'driver' => 'pgsql',
-            'host' => parse_url(getenv('DATABASE_URL'), PHP_URL_HOST),
-            'port' => parse_url(getenv('DATABASE_URL'), PHP_URL_PORT),
-            'database' => substr(parse_url(getenv('DATABASE_URL'), PHP_URL_PATH), 1),
-            'username' => parse_url(getenv('DATABASE_URL'), PHP_URL_USER),
-            'password' => parse_url(getenv('DATABASE_URL'), PHP_URL_PASS),
-            'charset' => 'utf8',
-            'prefix' => '',
-            'prefix_indexes' => true,
-            'schema' => 'public',
+        'pgsql' => array(
+            'driver'   => 'pgsql',
+            'host'     => $host,
+            'database' => $database,
+            'username' => $username,
+            'password' => $password,
+            'charset'  => 'utf8',
+            'prefix'   => '',
+            'schema'   => 'public',
             'sslmode' => 'prefer',
-        ],
-
+        ),
     ],
-
     /*
     |--------------------------------------------------------------------------
     | Migration Repository Table
@@ -82,9 +75,7 @@ return [
     | the migrations on disk haven't actually been run in the database.
     |
     */
-
     'migrations' => 'migrations',
-
     /*
     |--------------------------------------------------------------------------
     | Redis Databases
@@ -95,25 +86,19 @@ return [
     | such as APC or Memcached. Laravel makes it easy to dig right in.
     |
     */
-
     'redis' => [
-
         'client' => 'predis',
-
         'default' => [
             'host' => parse_url(env('REDIS_URL'), PHP_URL_HOST),
             'password' => parse_url(env('REDIS_URL'), PHP_URL_PASS),
             'port' => parse_url(env('REDIS_URL'), PHP_URL_PORT),
             'database' => env('REDIS_DB', 0),
         ],
-
         'cache' => [
             'host' => parse_url(env('REDIS_URL'), PHP_URL_HOST),
             'password' => parse_url(env('REDIS_URL'), PHP_URL_PASS),
             'port' => parse_url(env('REDIS_URL'), PHP_URL_PORT),
             'database' => env('REDIS_CACHE_DB', 1),
         ],
-
     ],
-
 ];
