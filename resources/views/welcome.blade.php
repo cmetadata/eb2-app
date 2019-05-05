@@ -78,7 +78,7 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    Laravel
+                    EB2 Versions
                 </div>
 
                 <div class="links">
